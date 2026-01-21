@@ -32,6 +32,9 @@ In this challenge, we see clients publishing messages to topics like `factory/li
 
 An early step is to extract the ELF file from the TCP stream. This can be done using Wireshark's "Follow TCP Stream" feature and saving the raw data. This extracted file is `mlaware` from the file listing.
 
+<img width="956" height="100" alt="image" src="https://github.com/user-attachments/assets/c2a0df39-981f-4352-a446-cbf303c51543" />
+
+
 ## 2. The MQTT Traffic
 
 Analyzing the MQTT traffic reveals the following pattern:
@@ -39,6 +42,10 @@ Analyzing the MQTT traffic reveals the following pattern:
 - **`PUBLISH` Packets**: Multiple publish packets are sent to various topics. The payload of these packets is a JSON object containing encrypted data in hexadecimal format under the `"data"` key.
 
 The hypothesis from this is that the flag is hidden within these encrypted messages.
+
+<img width="1150" height="120" alt="image" src="https://github.com/user-attachments/assets/77a2c644-4667-458a-9a6f-ca2002feca7c" />
+<img width="974" height="130" alt="image" src="https://github.com/user-attachments/assets/76555c02-48f7-4668-8462-6b4079a7f758" />
+
 
 ## Reverse Engineering the Encryption Process
 
@@ -214,3 +221,4 @@ By running the script, the flag will be revealed from the successfully decrypted
 ```sh
 python decript.py
 ```
+
