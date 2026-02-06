@@ -1,7 +1,7 @@
 # Write-up: NETCOMP 4.0 [Quals] - Sample Smuggling
 
 **Category:** Network Forensics / Scripting  
-**Files:** `traffics.pcapng`, `cart.py`  
+**Files:** `traffics.pcapng`
 **Goal:** Menemukan flag yang disembunyikan di dalam trafik jaringan.
 
 ## 1. Analisis Awal (Traffic Analysis)
@@ -216,4 +216,5 @@ Setelah menjalankan script di atas: `python solve_pcap.py`, kita mendapatkan fla
 **Flag:**
 ```
 {found_this_cool_method_to_store_malwares_https://github.com/CybercentreCanada/cart}
+
 ```
