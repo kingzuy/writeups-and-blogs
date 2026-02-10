@@ -1,6 +1,6 @@
 # Write‑up: NETCOMP 4.0 [Quals] – Sample Smuggling
 
-**Category:** Network Forensics / Scripting  
+**Category:** Forensic
 **Files:** `traffics.pcapng`  
 **Goal:** Recover the hidden flag from captured network traffic.
 
@@ -214,3 +214,4 @@ Recovered the full flag:
 ```
 {found_this_cool_method_to_store_malwares_https://github.com/CybercentreCanada/cart}
 ```
+
