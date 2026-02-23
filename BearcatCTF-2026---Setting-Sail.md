@@ -7,6 +7,7 @@ tags: ["writeup", "ctf", "forensics", "reverse engineering", "crypto", "pwn"]
 authors: ["zuy"]
 draft: false
 ---
+<img width="1472" height="834" alt="image" src="https://github.com/user-attachments/assets/35a03f29-e28d-4ff7-b865-f43c89bb7d47" />
 
 ## Write-up: Unknown Transmission
 
