@@ -35,6 +35,7 @@ The audio signal was processed using an SSTV decoder configured for the Robot36 
 ### Validation
 - Decoding with other SSTV modes (e.g., Scottie, Martin) produced garbled or incomplete images.
 - Only the Robot36 mode yielded a clean, fully-readable image with a string matching the standard CTF flag format.
+<img width="743" height="367" alt="image" src="https://github.com/user-attachments/assets/eda0e74a-fe98-47c4-ad81-3636a2eb28f3" />
 
 ### Flag
 `BCCTF{4mAt3uR_r4dio_ru135}`
@@ -77,7 +78,7 @@ Inspecting the unreachable blob revealed an older version of the villanelle poem
 ### Validation
 - The flag was successfully recovered from a historical Git object, not from the active file system.
 - The recovered string matched the `BCCTF{...}` format.
-<img width="626" height="63" alt="2026-02-23_09-22-43" src="https://github.com/user-attachments/assets/0a1a6970-fb47-43fa-9fab-c2cdc436b443" />
+<img width="625" height="61" alt="image" src="https://github.com/user-attachments/assets/a477d225-d05b-4066-b3e8-b72a96676b45" />
 
 ### Flag
 `BCCTF{1gN0r3_4ll_PreV1OU5_1n57Ruc7iOns}`
@@ -118,7 +119,7 @@ The task is to verify crew data from a set of emails and ensure no sensitive inf
 - The flag was invisible in the normal image view.
 - The flag only appeared consistently and clearly on the correct bit-plane (LSB of the red channel).
 - The resulting string adheres to the CTF's flag format.
-<img width="846" height="434" alt="image" src="https://github.com/user-attachments/assets/4484d274-da38-417e-a72d-a96de5ae2be2" />
+<img width="837" height="408" alt="image" src="https://github.com/user-attachments/assets/aca1bf6c-0323-40bb-aff7-65cdb290c4a0" />
 
 ### Flag
 `BCCTF{X_M4rk3Sss_th3_Sp0T}`
@@ -165,7 +166,7 @@ A passphrase cracking tool was run against `29.jpg`. Once the correct 8-characte
 ### Validation
 - The extracted payload was a non-empty file.
 - Its content was readable ASCII text and matched the `BCCTF{...}` format.
-<img width="359" height="64" alt="image" src="https://github.com/user-attachments/assets/8fec0b44-c73d-48b6-a0ef-2e763a3e47b2" />
+<img width="352" height="54" alt="image" src="https://github.com/user-attachments/assets/0bd51471-92da-4c08-a96b-b26626be4c26" />
 
 ### Flag
 `BCCTF{GonE_But_nOt_4GottEn}`
@@ -204,7 +205,7 @@ Decompressing the entire file to disk was impractical and dangerous. The solutio
 ### Validation
 - The flag was successfully extracted without writing the multi-gigabyte decompressed payload to disk.
 - The stream-based method was safe, repeatable, and did not require massive system resources.
-<img width="1191" height="382" alt="image" src="https://github.com/user-attachments/assets/95485ec0-4778-4ea4-8cf6-e08b502ca369" />
+<img width="1005" height="319" alt="image" src="https://github.com/user-attachments/assets/4e0de94f-912f-4f67-947a-6e537f5e1df0" />
 
 ### Flag
 `BCCTF{00H_1M_bR07l1_f33ls_S0_g0Od!}`
@@ -384,7 +385,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-<img width="892" height="109" alt="image" src="https://github.com/user-attachments/assets/e3699075-844c-4180-b3e4-3c70e026e8f6" />
+<img width="873" height="103" alt="image" src="https://github.com/user-attachments/assets/63a340b5-5586-46b5-850e-51ab6628d010" />
 
 ### Flag
 `BCCTF{C0nS91cuoU5_cH4Nn31s_4M1r1T3?}`
@@ -421,7 +422,7 @@ The text characters spelling out the flag were read directly from the spectrogra
 ### Validation
 - The text was unambiguous once the spectrogram was correctly configured.
 - The string matched the CTF flag format.
-<img width="2126" height="390" alt="image" src="https://github.com/user-attachments/assets/e9ed85fa-ea44-4281-9d66-b7feb6b33f71" />
+<img width="987" height="169" alt="image" src="https://github.com/user-attachments/assets/16e57648-7c3d-43b7-b878-8229ada833cb" />
 
 ### Flag
 `BCCTF{CrAk3rs_P3lZ}`
@@ -523,7 +524,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-<img width="544" height="61" alt="image" src="https://github.com/user-attachments/assets/5f2503a0-8568-437a-aa3e-1f3179be95b8" />
+<img width="539" height="57" alt="image" src="https://github.com/user-attachments/assets/f98c6814-a3e4-4720-b627-4cba7afa8dce" />
 
 
 ### Flag
@@ -649,7 +650,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-<img width="728" height="111" alt="image" src="https://github.com/user-attachments/assets/394eff87-f78b-4243-9b21-6ffc4b83094f" />
+<img width="720" height="107" alt="image" src="https://github.com/user-attachments/assets/9fb292e1-282a-46da-a833-b0e6fe26b475" />
 
 ### Flag
 `BCCTF{Th3_P05h_9oLly61Ot_p4rr0t}`
@@ -856,7 +857,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-<img width="737" height="73" alt="image" src="https://github.com/user-attachments/assets/e24544ce-39e7-4710-90da-88bbd21543fd" />
+<img width="727" height="69" alt="image" src="https://github.com/user-attachments/assets/cc8c1df1-f562-4f8d-8ca7-93352218ada6" />
 
 ### Flag
 `BCCTF{5LiD1n6_W1nd0w5_B3_L1k3:1m_C0nvo1v1nG}`
@@ -1015,7 +1016,7 @@ if __name__ == "__main__":
 
 ### Validation
 The full flag was assembled: `BCCTF{Buri3d_at_sea_Ent0m3d_amm0nG_th3_w4v3S}`. When this string was passed as an argument to the `./tomb` binary, it printed the success message, confirming the analysis was correct.
-<img width="608" height="76" alt="image" src="https://github.com/user-attachments/assets/37cfe267-073d-48f3-866d-cc3eaa395e64" />
+<img width="590" height="68" alt="image" src="https://github.com/user-attachments/assets/6388276d-d549-4cdf-968b-9d45c51a591e" />
 
 ### Flag
 `BCCTF{Buri3d_at_sea_Ent0m3d_amm0nG_th3_w4v3S}`
@@ -1298,7 +1299,7 @@ if __name__ == "__main__":
 ### Validation
 - The reconstructed flag was a coherent and correctly formatted string.
 - The concept aligns perfectly with a known weakness of ECB mode, validating the analysis path.
-<img width="1558" height="349" alt="image" src="https://github.com/user-attachments/assets/9916854e-985d-41e5-8293-ad691de2360d" />
+<img width="1004" height="208" alt="image" src="https://github.com/user-attachments/assets/f267d514-3af6-4971-bd5e-a6d4d953366a" />
 
 ### Flag
 `BCCTF{BLoCk_c1pH3r_Mod3}`
@@ -1526,7 +1527,7 @@ def main():
 if __name__ == '__main__':
     main()
 ```
-<img width="918" height="247" alt="image" src="https://github.com/user-attachments/assets/37dbb134-a119-461b-81d2-75c2b4fbf08b" />
+<img width="914" height="245" alt="image" src="https://github.com/user-attachments/assets/fcae98b0-7a3f-4d4d-834e-475cf51b1971" />
 
 ### Validation
 - The reconstructed flag, `BCCTF{N0_moR3_H4un71n6!_N0_M0rE_Gh0575!}`, when provided as input to the Brainfuck interpreter running the script, resulted in the success message.
@@ -1781,7 +1782,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-<img width="685" height="150" alt="image" src="https://github.com/user-attachments/assets/7867a67e-8160-4013-be59-e5ce42626283" />
+<img width="679" height="145" alt="image" src="https://github.com/user-attachments/assets/17cd6d0e-16b6-4070-bdb2-183f62072ca8" />
 
 ### Flag
 `BCCTF{S0r7_0f_L1k3_SuD0ku}`
