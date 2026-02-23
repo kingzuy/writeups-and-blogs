@@ -1,12 +1,4 @@
-﻿---
-title: "BearcatCTF 2026 - Setting Sail"
-description: "A collection of write-ups for the BearcatCTF 2026 'Setting Sail' event, covering forensics, reverse engineering, cryptography, and miscellaneous challenges."
-slug: "bearcatctf-2026-setting-sail-writeup"
-pubDate: 2026-02-23
-tags: ["writeup", "ctf", "forensics", "reverse engineering", "crypto", "pwn"]
-authors: ["zuy"]
-draft: false
----
+
 <img width="1472" height="834" alt="image" src="https://github.com/user-attachments/assets/35a03f29-e28d-4ff7-b865-f43c89bb7d47" />
 
 ## Write-up: Unknown Transmission
