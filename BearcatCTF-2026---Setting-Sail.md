@@ -35,7 +35,6 @@ The audio signal was processed using an SSTV decoder configured for the Robot36 
 ### Validation
 - Decoding with other SSTV modes (e.g., Scottie, Martin) produced garbled or incomplete images.
 - Only the Robot36 mode yielded a clean, fully-readable image with a string matching the standard CTF flag format.
-<img width="739" height="365" alt="image" src="https://github.com/user-attachments/assets/d28ca740-f8bd-4a08-9dbe-b4d6aa41cd3f" />
 
 ### Flag
 `BCCTF{4mAt3uR_r4dio_ru135}`
