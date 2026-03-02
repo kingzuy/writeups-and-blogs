@@ -2,7 +2,6 @@
 ## Write-up: baby serial
 
 **Category:** Forensics  
-**Points:** 379  
 **Author:** Anonimbus
 
 ---
