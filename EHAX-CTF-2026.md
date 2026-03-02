@@ -38,6 +38,7 @@ Target akhirnya adalah menemukan flag format `EH4X{...}`.
 ### Recovery
 Payload hasil decode menampilkan teks:
 
+<img width="964" height="385" alt="2026-03-02_08-44-31" src="https://github.com/user-attachments/assets/4bfb25a8-437f-4c88-b69c-f9fbe5141cda" />
 `EH4X{baby_U4rt}`
 
 ### Validation
@@ -59,7 +60,6 @@ File `.sal` forensics sering butuh decoding sinyal mentah manual jika analyzer b
 ## Write-up: let-the-penguin-live
 
 **Category:** Forensics  
-**Points:** 433  
 **Author:** mahekfr
 
 ---
@@ -88,6 +88,7 @@ Hint ini mengarah ke pemrosesan **selisih antar track audio** untuk memunculkan 
 ### Recovery
 Flag asli terbaca dari spectrogram hasil difference audio:
 
+<img width="957" height="328" alt="image" src="https://github.com/user-attachments/assets/fcbaca23-5685-4d48-94eb-9d3a553b1e11" />
 `EH4X{0n3_tr4ck_m1nd_tw0_tr4ck_F1les}`
 
 ### Validation
@@ -102,8 +103,145 @@ Flag asli terbaca dari spectrogram hasil difference audio:
 `EH4X{0n3_tr4ck_m1nd_tw0_tr4ck_F1les}`
 
 ### Solver
-Solver Python tersedia di:
-- `let-the-penguin-live/solver.py`
+Solver Python :
+```
+#!/usr/bin/env python3
+"""
+Solver for EHAX CTF - let-the-penguin-live
+
+Strategy:
+1. Use two audio tracks from challenge.mkv (or existing stereo.wav/surround.wav).
+2. Subtract one track from the other to isolate the anomaly ("one penguin").
+3. Render spectrogram around the burst window where text is embedded.
+4. Read the flag from generated image.
+"""
+
+from __future__ import annotations
+
+import argparse
+import shutil
+import subprocess
+import wave
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def extract_track_if_needed(mkv_path: Path, out_wav: Path, track_idx: int) -> None:
+    if out_wav.exists():
+        return
+    ffmpeg = shutil.which("ffmpeg")
+    if ffmpeg is None:
+        raise RuntimeError(
+            f"{out_wav.name} not found and ffmpeg is not available in PATH."
+        )
+    cmd = [
+        ffmpeg,
+        "-y",
+        "-i",
+        str(mkv_path),
+        "-map",
+        f"0:a:{track_idx}",
+        "-ac",
+        "1",
+        "-ar",
+        "48000",
+        "-c:a",
+        "pcm_s16le",
+        str(out_wav),
+    ]
+    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+def read_wav_mono(path: Path) -> tuple[np.ndarray, int]:
+    with wave.open(str(path), "rb") as wf:
+        channels = wf.getnchannels()
+        sample_rate = wf.getframerate()
+        sample_width = wf.getsampwidth()
+        raw = wf.readframes(wf.getnframes())
+
+    if sample_width != 2:
+        raise ValueError(f"Unsupported sample width in {path.name}: {sample_width * 8}-bit")
+
+    data = np.frombuffer(raw, dtype=np.int16).astype(np.float32)
+    if channels > 1:
+        data = data.reshape(-1, channels).mean(axis=1)
+    data /= 32768.0
+    return data, sample_rate
+
+
+def write_wav_mono(path: Path, data: np.ndarray, sample_rate: int) -> None:
+    x = np.clip(data, -1.0, 1.0)
+    pcm = (x * 32767.0).astype(np.int16)
+    with wave.open(str(path), "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        wf.writeframes(pcm.tobytes())
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Solve let-the-penguin-live from audio track difference.")
+    parser.add_argument("--input", default="challenge.mkv", help="Input MKV file")
+    parser.add_argument("--start", type=float, default=25.35, help="Burst start time (seconds)")
+    parser.add_argument("--end", type=float, default=27.25, help="Burst end time (seconds)")
+    parser.add_argument("--nfft", type=int, default=4096, help="FFT size for spectrogram")
+    args = parser.parse_args()
+
+    base = Path(__file__).resolve().parent
+    mkv = base / args.input
+    stereo_wav = base / "stereo.wav"
+    surround_wav = base / "surround.wav"
+
+    if not stereo_wav.exists() or not surround_wav.exists():
+        if not mkv.exists():
+            raise FileNotFoundError("Need challenge.mkv or pre-extracted stereo.wav/surround.wav")
+        extract_track_if_needed(mkv, stereo_wav, 0)
+        extract_track_if_needed(mkv, surround_wav, 1)
+
+    stereo, sr0 = read_wav_mono(stereo_wav)
+    surround, sr1 = read_wav_mono(surround_wav)
+    if sr0 != sr1:
+        raise ValueError(f"Sample rates differ: {sr0} vs {sr1}")
+
+    n = min(len(stereo), len(surround))
+    stereo = stereo[:n]
+    surround = surround[:n]
+
+    # Crowd cancellation: isolate hidden signal by track difference.
+    diff = stereo - surround
+    peak = np.max(np.abs(diff))
+    if peak > 0:
+        diff /= peak
+
+    diff_wav = base / "solver_diff.wav"
+    write_wav_mono(diff_wav, diff, sr0)
+
+    i0 = max(0, int(args.start * sr0))
+    i1 = min(len(diff), int(args.end * sr0))
+    burst = diff[i0:i1]
+
+    if burst.size == 0:
+        raise ValueError("Empty burst segment. Check --start/--end values.")
+
+    spec_path = base / "solver_spec.png"
+    plt.figure(figsize=(20, 8))
+    plt.specgram(burst, NFFT=args.nfft, Fs=sr0, noverlap=args.nfft - args.nfft // 8, cmap="gray_r")
+    plt.ylim(0, 6500)
+    plt.xlabel("Time (s)")
+    plt.ylabel("Frequency (Hz)")
+    plt.title("let-the-penguin-live: diff-track burst spectrogram")
+    plt.tight_layout()
+    plt.savefig(spec_path, dpi=220)
+    plt.close()
+
+    print(f"[+] Wrote diff audio: {diff_wav}")
+    print(f"[+] Wrote spectrogram: {spec_path}")
+
+if __name__ == "__main__":
+    main()
+```
 
 Jalankan dari folder challenge:
 ```bash
@@ -119,7 +257,6 @@ Output utama:
 ## Write-up: painter
 
 **Category:** Forensics  
-**Points:** 250  
 **Author:** stapat
 
 ---
@@ -149,6 +286,7 @@ Challenge memberikan file network capture `painter/pref.pcap` dengan hint bahwa 
 ### Recovery
 Tulisan hasil rekonstruksi menghasilkan flag:
 
+<img width="953" height="412" alt="image" src="https://github.com/user-attachments/assets/8ad17800-c9a1-46a2-a4f8-bb2f4a054160" />
 `EH4X{wh4t_c0l0ur_15_th3_fl4g}`
 
 ### Validation
@@ -159,12 +297,65 @@ Tulisan hasil rekonstruksi menghasilkan flag:
 ### Flag
 `EH4X{wh4t_c0l0ur_15_th3_fl4g}`
 
+### Solver  
+Solver Python :
+```
+import subprocess
+import numpy as np
+import matplotlib.pyplot as plt
+
+out = subprocess.check_output([
+    'wsl','-e','bash','-lc',
+    'tshark -r /mnt/e/ctf/ehax/painter/pref.pcap -T fields -e usb.capdata'
+], text=True)
+
+rows = []
+for s in out.splitlines():
+    s = s.strip()
+    if not s:
+        continue
+    b = bytes.fromhex(s)
+    st = b[1]
+    dx = int.from_bytes(b[2:4], 'little', signed=True)
+    dy = int.from_bytes(b[4:6], 'little', signed=True)
+    rows.append((st, dx, dy))
+
+pts = []
+x = 0
+y = 0
+for st, dx, dy in rows:
+    x += dx
+    y += dy
+    pts.append((x, y, st))
+
+arr = np.array(pts)
+
+plt.figure(figsize=(14, 6))
+for st, c in [(0, '#999999'), (1, '#ff0066'), (2, '#00aaff')]:
+    m = arr[:, 2] == st
+    plt.scatter(arr[m, 0], -arr[m, 1], s=1, c=c, label=f'st{st}', alpha=0.6)
+plt.legend()
+plt.axis('equal')
+plt.tight_layout()
+plt.savefig(r'e:/ctf/ehax/painter/path_scatter.png', dpi=200)
+plt.close()
+
+plt.figure(figsize=(14, 6))
+for st, c in [(1, '#ff0066'), (2, '#00aaff')]:
+    m = arr[:, 2] == st
+    plt.plot(arr[m, 0], -arr[m, 1], '.', ms=1, c=c, alpha=0.8)
+plt.axis('equal')
+plt.tight_layout()
+plt.savefig(r'e:/ctf/ehax/painter/path_draw_states12.png', dpi=200)
+plt.close()
+
+print('done', arr.shape)
+```
 ---
 
 ## Write-up: Lost in Waves
 
-**Category:** Forensics  
-**Points:** 485  
+**Category:** Forensics   
 **Author:** Anonimbus
 
 ---
@@ -200,6 +391,7 @@ Contoh command decode final:
 ```bash
 sox concat.wav -t raw -e signed-integer -b 16 -r 22050 -c 1 - | multimon-ng -t raw -a POCSAG1200 -
 ```
+<img width="994" height="260" alt="image" src="https://github.com/user-attachments/assets/501906db-bb74-4eeb-b593-ff834d17f327" />
 
 ### Recovery
 Output `POCSAG1200` memuat pesan teks:
