@@ -1,3 +1,4 @@
+<img width="1800" height="870" alt="image" src="https://github.com/user-attachments/assets/ff29d8d4-9e2a-48cf-a9e9-63989e3cf19e" />
 
 ## Write-up: baby serial
 
