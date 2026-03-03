@@ -391,7 +391,7 @@ Contoh command decode final:
 ```bash
 sox concat.wav -t raw -e signed-integer -b 16 -r 22050 -c 1 - | multimon-ng -t raw -a POCSAG1200 -
 ```
-<img width="994" height="260" alt="image" src="https://github.com/user-attachments/assets/501906db-bb74-4eeb-b593-ff834d17f327" />
+<img width="990" height="256" alt="image" src="https://github.com/user-attachments/assets/932dcd55-d5d1-403d-bf61-9860b2cba241" />
 
 ### Recovery
 Output `POCSAG1200` memuat pesan teks:
